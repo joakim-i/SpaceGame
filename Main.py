@@ -1,14 +1,18 @@
-import sys
-import pygame
+
+import sys, pygame
 from pygame.locals import *
 from Projectile import *
-
+from Background import ScrollingBG
 
 pygame.init()
 
 clock = pygame.time.Clock()
 size = width, height = 1280, 720
 screen = pygame.display.set_mode(size)
+
+scrollingBG = ScrollingBG(size, 60, screen)
+
+
 screencolor = (0, 0, 0)
 
 Bullets = []
@@ -23,6 +27,7 @@ while 1:
         cooldowncounter -= 1
 
     pressed = pygame.key.get_pressed()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -31,7 +36,12 @@ while 1:
         cooldowncounter = bulletcooldown
         Bullets.append(Projectile(640, 700, 0, -2))
 
+
+    screen.fill((0, 0, 0))
+    scrollingBG.Scroll()
+
     for Bullet in Bullets:
         Bullet.draw(screen)
         Bullet.move()
+
     pygame.display.flip()
