@@ -1,12 +1,13 @@
 import random
-from pygame import draw
+from pygame import draw, gfxdraw
 import math
+from Renderer import RenderableObject, Layer
 
 class ScrollingBG:
 
     stars = []
 
-    def __init__(self, size, starAmount, screen):
+    def __init__(self, size, starAmount, screen, color=(200, 230, 220)):
         self.size = size
         self.starAmount = starAmount
         self.screen = screen
@@ -16,35 +17,39 @@ class ScrollingBG:
                 math.floor(random.random() * self.screenW),
                 math.floor(random.random() * self.screenH),
                 self.screenH,
-                self.screenW
+                self.screenW,
+                color
             ))
 
-
-    def Scroll(self):
+    def update(self, speedMultiplier=1):
         for star in self.stars:
-            star.draw(self.screen)
-            star.move()
-        pass
+            star.move(speedMultiplier)
 
 
 
-class Star:
+class Star(RenderableObject):
     x, y = 300, 500
-    color = (200, 230, 220)
 
-    def __init__(self, x, y, screenH, screenW):
-        self.radius = random.randrange(1, 8)
-        self.speed = self.radius / 10
+    def __init__(self, x, y, screenH, screenW, color):
+        super().__init__(Layer.BACKGROUND)
+        self.radius = random.randrange(-3, 4)
         self.x = x
         self.y = y
         self.screenH = screenH
         self.screenW = screenW
+        self.speed = self.radius / 15
+        self.color = color
 
     def draw(self, screen):
-        draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius, 0)
+        if self.radius > 0:
+            gfxdraw.aacircle(screen, int(self.x), int(self.y), self.radius, self.color)
+            gfxdraw.filled_circle(screen, int(self.x), int(self.y), self.radius, self.color)
+        else:
+            draw.rect(screen, self.color, (int(self.x), int(self.y), 1, 1))
 
-    def move(self):
-        self.y += self.speed
-        if self.y > self.screenH:
-            self.y = -self.radius*2
-            self.x = math.floor(random.random() * self.screenW)
+    def move(self, speedMultiplier=1):
+        if self.radius > 0:
+            self.y += self.speed * speedMultiplier
+            if self.y > self.screenH:
+                self.y = -self.radius*2
+                self.x = math.floor(random.random() * self.screenW)
