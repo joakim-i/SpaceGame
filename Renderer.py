@@ -4,10 +4,11 @@ from enum import Enum
 
 class Layer(Enum):
 
-    MAIN_MENU = 7
-    UI = 6
-    PLAYER = 5
-    ENEMY = 4
+    MAIN_MENU = 8
+    UI = 7
+    PLAYER = 6
+    ENEMY = 5
+    PROJECTILES = 4
     BULLETS = 3
     PARTICLES = 2
     DECORATION = 1
@@ -24,7 +25,7 @@ class RenderableObject(metaclass=abc.ABCMeta):
 
 class Renderer:
 
-    renderList = [[], [], [], [], [], [], [], []]
+    renderList = [[], [], [], [], [], [], [], [], []]
 
     @classmethod
     def add_to_renderlist(cls, source_object: RenderableObject, layer: Layer):
@@ -44,6 +45,12 @@ class Renderer:
     @classmethod
     def draw_particles(cls, screen):
         for renderable_object in cls.renderList[Layer.PARTICLES.value]:
+            renderable_object.draw(screen)
+
+    @classmethod
+
+    def draw_projectiles(cls, screen):
+        for renderable_object in cls.renderList[Layer.PROJECTILES.value]:
             renderable_object.draw(screen)
 
     @classmethod
