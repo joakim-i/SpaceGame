@@ -12,6 +12,12 @@ class Effect():
             cls.particles.append(_Particle(pos, reductionRate, speed))
 
     @classmethod
+    def bullet_hit(cls, pos, speed, directionalVector):
+
+        for x in range(0, 20):
+            cls.particles.append(_Particle(pos, 0.2, speed, directionalVector))
+
+    @classmethod
     def testEffect(cls, pos, particleAmount=250, reductionRate=0.08, speed=3):
         outerColor = (204, 0, 0)
         middleColor = (230, 153, 0)
@@ -33,14 +39,14 @@ class Effect():
                 color=outerColor, radiusMin=2, radiusMax=4))
 
 
-
-
     @classmethod
     def update(cls):
         for particle in cls.particles:
             particle.update()
             if particle.isReadyToDie():
                 cls.particles.remove(particle)
+                del particle
+
 
 class _Particle(RenderableObject):
 
@@ -63,12 +69,12 @@ class _Particle(RenderableObject):
         self.pos = (self.pos[0] + self.speed*self.directionalVector[0],
                     self.pos[1] + self.speed*self.directionalVector[1])
 
+
     def isReadyToDie(self):
         if self.radius <= 0:
             return True
         else:
             return False
-
 
 
     def draw(self, surface):
