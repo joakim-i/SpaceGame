@@ -1,6 +1,7 @@
 import random
 from pygame import draw, Surface
-from Renderer import Layer, RenderableObject
+from Renderer import Layer, RenderableObject, Renderer
+
 
 class Effect():
     particles = []
@@ -44,8 +45,10 @@ class Effect():
         for particle in cls.particles:
             particle.update()
             if particle.isReadyToDie():
-                cls.particles.remove(particle)
-                del particle
+                particle.destroy()
+                #cls.particles.remove(particle)
+                #Renderer.renderList[Layer.PARTICLES.value].remove(particle)
+
 
 
 class _Particle(RenderableObject):
@@ -75,6 +78,13 @@ class _Particle(RenderableObject):
             return True
         else:
             return False
+
+    def destroy(self):
+        if self in Renderer.renderList[self.layer]:
+            Renderer.renderList[self.layer].remove(self)
+        if self in Effect.particles:
+            Effect.particles.remove(self)
+
 
 
     def draw(self, surface):

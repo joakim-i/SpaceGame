@@ -1,7 +1,7 @@
 import random
 from pygame import draw, gfxdraw
 import math
-from Renderer import RenderableObject, Layer
+from Renderer import RenderableObject, Layer, Renderer
 
 class ScrollingBG:
 
@@ -53,3 +53,6 @@ class Star(RenderableObject):
             if self.y > self.screenH:
                 self.y = -self.radius*2
                 self.x = math.floor(random.random() * self.screenW)
+
+    def destroy(self):
+        pass
