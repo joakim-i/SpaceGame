@@ -27,6 +27,9 @@ class Module(RenderableObject):
     def draw(self, surface):
         surface.blit(self.sprite_core_hull.image,(self.x, self.y))
 
+    def destroy(self):
+        pass
+
 class Player():
 
     def __init__(self, pos: tuple):

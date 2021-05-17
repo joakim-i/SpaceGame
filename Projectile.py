@@ -35,5 +35,8 @@ class Projectile(RenderableObject):
         self.rangeremaining -= abs(self.yspeed)
 
     def draw(self, screen):
-        draw.circle(screen, (150, 150, 150), (self.x, self.y), 5)
+        draw.circle(screen, (150, 150, 150), (int(self.x), int(self.y)), 5)
+
+    def destroy(self):
+        pass
     
