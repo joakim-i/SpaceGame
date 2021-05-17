@@ -15,7 +15,7 @@ screen_size = screen_width, screen_height = 1280, 720
 screen = pygame.display.set_mode(screen_size)
 scrollingBG = ScrollingBG(screen_size, 100, screen)
 mainMenu = GUI.MainMenu(screen)
-player1 = Player((640,660))
+player1 = Player((640,560))
 inputs = get_pressed()
 
 while 1:
