@@ -46,9 +46,6 @@ class Effect():
             particle.update()
             if particle.isReadyToDie():
                 particle.destroy()
-                #cls.particles.remove(particle)
-                #Renderer.renderList[Layer.PARTICLES.value].remove(particle)
-
 
 
 class _Particle(RenderableObject):
