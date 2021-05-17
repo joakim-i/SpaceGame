@@ -107,6 +107,9 @@ class Button(RenderableObject):
         draw.rect(surface, self.currentColor, self.buttonRect)
         surface.blit(self.textRender, (self.x + self.getTextOffsetX(), self.y + self.getTextOffsetY()))
 
+    def destroy(self):
+        pass
+
     def setPressedEvent(self, lambdaFunction):
         self.event = lambdaFunction
 

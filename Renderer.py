@@ -17,10 +17,16 @@ class Layer(Enum):
 class RenderableObject(metaclass=abc.ABCMeta):
 
     def __init__(self, layer: Layer):
+        self.layer = layer.value
         Renderer.add_to_renderlist(self, layer)
 
     @abc.abstractmethod
     def draw(self, surface):
+        pass
+
+    @abc.abstractmethod
+    def destroy(self):
+        #Remove yourself from Renderer.renderList
         pass
 
 class Renderer:
@@ -46,6 +52,7 @@ class Renderer:
     def draw_particles(cls, screen):
         for renderable_object in cls.renderList[Layer.PARTICLES.value]:
             renderable_object.draw(screen)
+        print(len(cls.renderList[2]))
 
     @classmethod
 

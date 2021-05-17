@@ -34,8 +34,9 @@ while 1:
         # Only check if mainMenu is closed!
         if not mainMenu.isActive():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                #Effect.explosion(pygame.mouse.get_pos(), 1000, 0.03, 5)
+                #Effect.explosion(pygame.mouse.get_pos(), 300, 0.03, 7)
                 Effect.testEffect(pygame.mouse.get_pos())
+                #Effect.bullet_hit(pygame.mouse.get_pos(), 20, (1,1))
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
