@@ -25,7 +25,7 @@ class Projectile(RenderableObject):
         self.xspeed = xspeedvar
         self.yspeed = yspeedvar
         self.damage = damagevar
-        self.rangeremaining = 500
+        self.rangeremaining = 350
 
     def move(self):
         self.x += self.xspeed
