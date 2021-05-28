@@ -1,7 +1,6 @@
 from pygame import draw
 from Particles import Effect
 from Renderer import RenderableObject, Layer, Renderer
-import gc,sys
 
 
 class Projectiles():
@@ -13,9 +12,8 @@ class Projectiles():
             if projectile.rangeremaining > 0:
                 projectile.move()
             else:
-                Effect.testEffect((projectile.x, projectile.y))
-                cls.projectiles.remove(projectile)
-                Renderer.renderList[4].remove(projectile)
+                Effect.testEffect([projectile.x, projectile.y])
+                projectile.destroy()
 
 class Projectile(RenderableObject):
 
@@ -35,5 +33,8 @@ class Projectile(RenderableObject):
         self.rangeremaining -= abs(self.yspeed)
 
     def draw(self, screen):
-        draw.circle(screen, (150, 150, 150), (self.x, self.y), 5)
-    
+        draw.circle(screen, (150, 150, 150), (int(self.x), int(self.y)), 5)
+
+    def destroy(self):
+            Renderer.renderList[self.layer].remove(self)
+            Projectiles.projectiles.remove(self)
