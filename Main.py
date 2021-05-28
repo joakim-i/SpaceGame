@@ -4,12 +4,12 @@ import GUI
 from Background import ScrollingBG
 from Particles import Effect
 from Renderer import Renderer, Layer
-from Character import Characters, Player
+from Character import Characters, Module, Player
 from Projectile import Projectile, Projectiles
 import gc
 
 pygame.init()
-FPS = 1206
+FPS = 120
 clock = pygame.time.Clock()
 screen_size = screen_width, screen_height = 1280, 720
 screen = pygame.display.set_mode(screen_size)
@@ -55,11 +55,27 @@ while 1:
     ##### PRE-DRAW UPDATE #####
     # Regardless of mainMenu
     Effect.update()
+
+
+    #### DEBUG UI BEGIN #####
+
+    modulecount = 0
+    for gridy, modulerow in enumerate(player1.modules): #row
+        for gridx, module in enumerate(modulerow): #column
+            if type(module) is not None:
+                if issubclass(type(module), Module):
+                    modulecount += 1
+
+
     debugUI.components = [
         "Particles: " + str(len(Renderer.renderList[Layer.PARTICLES.value])),
         "Player x: " + str(int(player1.x)) + " y: " + str(int(player1.y)),
-        "Player xspeed: " + str(int(player1.x_vel)) + " yspeed: " + str(int(player1.y_vel))
+        "Player x spd: " + str(int(player1.x_vel)) + " cap: " + str(int(player1.x_vel_cap)) + " y spd: " + str(int(player1.y_vel)) + " cap: " + str(int(player1.y_vel_cap)),
+        "Models: " + str(modulecount)
         ]
+
+
+    ##### DEBUG UI END ######
     
 
     # Update only if mainMenu is closed!
