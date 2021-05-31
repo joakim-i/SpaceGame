@@ -50,7 +50,7 @@ class Projectile(RenderableObject):
         Projectiles.projectiles.remove(self)
         Renderer.renderList[Layer.PROJECTILES.value].remove(self)
 
-    
+
 class Bullet(Projectile):
     def __init__(self, pos: tuple, xspeed=0, yspeed=-12, damage=1, range_remaining=600):
         super(Bullet, self).__init__(pos, xspeed, yspeed, damage, range_remaining)
