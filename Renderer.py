@@ -52,7 +52,6 @@ class Renderer:
     def draw_particles(cls, screen):
         for renderable_object in cls.renderList[Layer.PARTICLES.value]:
             renderable_object.draw(screen)
-        print(len(cls.renderList[2]))
 
     @classmethod
 

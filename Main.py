@@ -5,7 +5,7 @@ from Background import ScrollingBG
 from Particles import Effect
 from Renderer import Renderer
 from Character import Characters, Player
-from Projectile import Projectile, Projectiles
+from Projectile import *
 import gc
 
 pygame.init()
@@ -40,7 +40,7 @@ while 1:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    Projectile((player1.x, player1.y), 0, -8)
+                    Rocket((player1.x, player1.y))
         
         # Only check if mainMenu is Open!
         if mainMenu.isActive():
