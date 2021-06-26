@@ -1,12 +1,13 @@
 import logging,sys,pygame
+import random
 from pygame.key import get_pressed
 import GUI
 from Background import ScrollingBG
 from Particles import Effect
 from Renderer import Renderer, Layer
-from Character import Characters, Module, Player
+from Character import Characters, Module, Player, StarGhostOnion
 from Projectile import Projectile, Projectiles
-import gc
+from pygame import Rect
 
 pygame.init()
 FPS = 120
@@ -18,6 +19,12 @@ mainMenu = GUI.MainMenu(screen)
 debugUI = GUI.DebugUI(screen)
 player1 = Player((640,560))
 inputs = get_pressed()
+
+
+### Spam create enemies
+for i in range(20):
+    StarGhostOnion((random.randint(100, 1100), random.randint(100, 400)))
+
 
 while 1:
     clock.tick(FPS)
@@ -39,7 +46,7 @@ while 1:
                 Effect.testEffect(pygame.mouse.get_pos())
                 #Effect.bullet_hit(pygame.mouse.get_pos(), 20, (1,1))
 
-#            if event.type == pygame.KEYDOWN:
+#            if event.type == pygame.KEYDOWN:A
 #                if event.key == pygame.K_SPACE:
 #                    Projectile((player1.x, player1.y), 0, -8)
         
@@ -49,8 +56,7 @@ while 1:
                 mainMenu.update(pygame.mouse.get_pos(), True)
             
                
-                             
-
+                            
 
     ##### PRE-DRAW UPDATE #####
     # Regardless of mainMenu
