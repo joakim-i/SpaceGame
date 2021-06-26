@@ -4,6 +4,7 @@ from enum import Enum
 
 class Layer(Enum):
 
+    DEBUGUI = 9
     MAIN_MENU = 8
     UI = 7
     PLAYER = 6
@@ -31,7 +32,7 @@ class RenderableObject(metaclass=abc.ABCMeta):
 
 class Renderer:
 
-    renderList = [[], [], [], [], [], [], [], [], []]
+    renderList = [[], [], [], [], [], [], [], [], [], []]
 
     @classmethod
     def add_to_renderlist(cls, source_object: RenderableObject, layer: Layer):
@@ -89,6 +90,10 @@ class Renderer:
         for renderable_object in cls.renderList[Layer.UI.value]:
             renderable_object.draw(screen)
 
+    @classmethod
+    def draw_DEBUG(cls, screen):
+        for renderable_object in cls.renderList[Layer.DEBUGUI.value]:
+            renderable_object.draw(screen)
 
 class ExampleClass(RenderableObject):
     #Example of bare bones class with autorendering!

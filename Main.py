@@ -3,9 +3,10 @@ from pygame.key import get_pressed
 import GUI
 from Background import ScrollingBG
 from Particles import Effect
-from Renderer import Renderer
-from Character import Characters, Player
-from Projectile import *
+
+from Renderer import Renderer, Layer
+from Character import Characters, Module, Player
+from Projectile import Projectile, Projectiles
 import gc
 
 pygame.init()
@@ -15,6 +16,7 @@ screen_size = screen_width, screen_height = 1280, 720
 screen = pygame.display.set_mode(screen_size)
 scrollingBG = ScrollingBG(screen_size, 100, screen)
 mainMenu = GUI.MainMenu(screen)
+debugUI = GUI.DebugUI(screen)
 player1 = Player((640,560))
 inputs = get_pressed()
 
@@ -41,6 +43,7 @@ while 1:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     Rocket((player1.x, player1.y))
+
         
         # Only check if mainMenu is Open!
         if mainMenu.isActive():
@@ -54,30 +57,36 @@ while 1:
     ##### PRE-DRAW UPDATE #####
     # Regardless of mainMenu
     Effect.update()
+
+
+    #### DEBUG UI BEGIN #####
+
+    modulecount = 0
+    for gridy, modulerow in enumerate(player1.modules): #row
+        for gridx, module in enumerate(modulerow): #column
+            if type(module) is not None:
+                if issubclass(type(module), Module):
+                    modulecount += 1
+
+
+    debugUI.components = [
+        "Particles: " + str(len(Renderer.renderList[Layer.PARTICLES.value])),
+        "Player x: " + str(int(player1.x)) + " y: " + str(int(player1.y)),
+        "Player x spd: " + str(int(player1.x_vel)) + " cap: " + str(int(player1.x_vel_cap)) + " y spd: " + str(int(player1.y_vel)) + " cap: " + str(int(player1.y_vel_cap)),
+        "Models: " + str(modulecount)
+        ]
+
+
+    ##### DEBUG UI END ######
     
 
     # Update only if mainMenu is closed!
     if not mainMenu.isActive():
         scrollingBG.update()
         Projectiles.update()
-        Characters.update()
+        Characters.update(events)
 
-        if (not inputs[pygame.K_a]) and (not inputs[pygame.K_d]):
-            if player1.x_vel > 0:
-                player1.x_vel -= player1.x_vel_cap/15
-                if player1.x_vel < 0:
-                     player1.x_vel = 0      
-            elif player1.x_vel < 0:
-                player1.x_vel += player1.x_vel_cap/15
-                if player1.x_vel > 0:
-                    player1.x_vel = 0        
 
-        if inputs[pygame.K_d]:
-            if player1.x_vel <= player1.x_vel_cap:
-                player1.x_vel += player1.x_vel_cap/40
-        if inputs[pygame.K_a]:
-            if player1.x_vel >= -(player1.x_vel_cap):
-                player1.x_vel -= player1.x_vel_cap/40
 
     # Update only if mainMenu is open!
     if mainMenu.isActive():
@@ -93,6 +102,7 @@ while 1:
     Renderer.draw_enemies(screen)
     Renderer.draw_player(screen)
     Renderer.draw_projectiles(screen)
+    Renderer.draw_DEBUG(screen)
 
     testsurf = pygame.Surface((100, 100), pygame.SRCALPHA, 32)
     pygame.draw.circle(testsurf, (255, 0, 0), (50, 50), 40)

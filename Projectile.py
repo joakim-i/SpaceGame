@@ -15,6 +15,7 @@ class Projectiles:
             else:
                 projectile.update()
 
+
 class Projectile(RenderableObject):
 
     def __init__(self, pos: tuple, xspeed, yspeed, damage, range_remaining):
@@ -31,6 +32,7 @@ class Projectile(RenderableObject):
         self.emitter = None
         self.x_offset = 0
         self.y_offset = 0
+
 
     def update(self):
         self.x += self.xspeed
@@ -68,3 +70,4 @@ class Rocket(Projectile):
         Effect.explosion((self.x, self.y), 800, 0.02, 2.5)
         Projectiles.projectiles.remove(self)
         Renderer.renderList[Layer.PROJECTILES.value].remove(self)
+

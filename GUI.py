@@ -2,6 +2,71 @@ from pygame import Rect, draw, Surface, font
 import pygame
 from Renderer import Layer, RenderableObject
 
+# Renderable objects
+
+class Button(RenderableObject):
+    hoverColor = (30, 30, 150)
+    normalColor = (50, 50, 50)
+    currentColor = normalColor
+
+    def __init__(self, screen:Surface, width, height, x=0, y=0, color=(50,50,50), text="not set", fontSize=32, layer=Layer.UI):
+        super().__init__(layer)
+        self.screen = screen
+        self.event = None
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
+        self.normalColor = color
+        self.currentColor = self.normalColor
+        self.buttonRect = Rect(self.x, self.y, self.width, self.height)
+        self.font = font.SysFont(None, fontSize)
+        self.text = text
+        self.textRender = self.font.render(self.text, True, (255, 255, 255))
+
+    def press(self):
+        if self.event is not None:
+            self.event()
+
+    def update(self, mousePos: tuple, leftMBIsPressed: bool = False):
+        if self.buttonRect.collidepoint(mousePos[0], mousePos[1]):
+            self.useHoverColor()
+            if leftMBIsPressed:
+                self.press()
+        else:
+            self.useNormalColor()
+
+    def draw(self, surface):
+        draw.rect(surface, self.currentColor, self.buttonRect)
+        surface.blit(self.textRender, (self.x + self.getTextOffsetX(), self.y + self.getTextOffsetY()))
+
+    def destroy(self):
+        pass
+
+    def setPressedEvent(self, lambdaFunction):
+        self.event = lambdaFunction
+
+    def setText(self, text):
+        self.text = text
+        self.textRender = self.font.render(self.text, True, (255, 255, 255))
+
+    def getText(self):
+        return self.text
+
+    def getTextOffsetX(self):
+        return (self.width - self.font.size(self.text)[0]) / 2
+
+    def getTextOffsetY(self):
+        return (self.height - self.font.size(self.text)[1]) / 2
+
+    def useHoverColor(self):
+        self.currentColor = self.hoverColor
+
+    def useNormalColor(self):
+        self.currentColor = self.normalColor
+
+# Non-rendarable
+
 class MainMenu:
     buttonW = 200
     buttonH = 45
@@ -71,63 +136,28 @@ class MainMenu:
     def getComponentsList(self):
         return self.components
 
-class Button(RenderableObject):
-    hoverColor = (30, 30, 150)
-    normalColor = (50, 50, 50)
-    currentColor = normalColor
+class DebugUI(RenderableObject):
 
-    def __init__(self, screen:Surface, width, height, x=0, y=0, color=(50,50,50), text="not set", fontSize=32, layer=Layer.UI):
-        super().__init__(layer)
-        self.screen = screen
-        self.event = None
-        self.width = width
-        self.height = height
-        self.x = x
-        self.y = y
-        self.normalColor = color
-        self.currentColor = self.normalColor
-        self.buttonRect = Rect(self.x, self.y, self.width, self.height)
-        self.font = font.SysFont(None, fontSize)
-        self.text = text
-        self.textRender = self.font.render(self.text, True, (255, 255, 255))
-
-    def press(self):
-        if self.event is not None:
-            self.event()
-
-    def update(self, mousePos: tuple, leftMBIsPressed: bool = False):
-        if self.buttonRect.collidepoint(mousePos[0], mousePos[1]):
-            self.useHoverColor()
-            if leftMBIsPressed:
-                self.press()
-        else:
-            self.useNormalColor()
+    def __init__(self, screen: Surface):  
+        super().__init__(Layer.DEBUGUI)
+        self.components = []
+        self.fontSize = 24
+        self.font = font.SysFont(None, self.fontSize)
+	
 
     def draw(self, surface):
-        draw.rect(surface, self.currentColor, self.buttonRect)
-        surface.blit(self.textRender, (self.x + self.getTextOffsetX(), self.y + self.getTextOffsetY()))
+        for i, component in enumerate(self.components):
+            self.textRender = self.font.render(str(component), True, (255, 255, 255))
+            surface.blit(self.textRender, (10, (10+(i*18))))
 
-    def destroy(self):
+
+
+    def update(self):
+        for component in self.components:
+            component.update()
+
+    def getComponentsList(self):
+        return self.components
+
+    def destroy():
         pass
-
-    def setPressedEvent(self, lambdaFunction):
-        self.event = lambdaFunction
-
-    def setText(self, text):
-        self.text = text
-        self.textRender = self.font.render(self.text, True, (255, 255, 255))
-
-    def getText(self):
-        return self.text
-
-    def getTextOffsetX(self):
-        return (self.width - self.font.size(self.text)[0]) / 2
-
-    def getTextOffsetY(self):
-        return (self.height - self.font.size(self.text)[1]) / 2
-
-    def useHoverColor(self):
-        self.currentColor = self.hoverColor
-
-    def useNormalColor(self):
-        self.currentColor = self.normalColor
