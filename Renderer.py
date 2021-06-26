@@ -1,6 +1,6 @@
 import abc
 from enum import Enum
-
+from pygame import Rect
 
 class Layer(Enum):
 
@@ -29,6 +29,12 @@ class RenderableObject(metaclass=abc.ABCMeta):
     def destroy(self):
         #Remove yourself from Renderer.renderList
         pass
+
+    #@property
+    #@abc.abstractmethod
+    #def crudeHitbox(self):
+    #    #Mandatory hitbox, 
+    #    pass
 
 class Renderer:
 
