@@ -3,6 +3,7 @@ from pygame.key import get_pressed
 import GUI
 from Background import ScrollingBG
 from Particles import Effect
+
 from Renderer import Renderer, Layer
 from Character import Characters, Module, Player
 from Projectile import Projectile, Projectiles
@@ -39,9 +40,10 @@ while 1:
                 Effect.testEffect(pygame.mouse.get_pos())
                 #Effect.bullet_hit(pygame.mouse.get_pos(), 20, (1,1))
 
-#            if event.type == pygame.KEYDOWN:
-#                if event.key == pygame.K_SPACE:
-#                    Projectile((player1.x, player1.y), 0, -8)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    Rocket((player1.x, player1.y))
+
         
         # Only check if mainMenu is Open!
         if mainMenu.isActive():
